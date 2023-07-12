@@ -1,9 +1,5 @@
 package teste.hudson.controllers;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +17,12 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/sessao")
-@Api(value = "API Sessão")
 public class SessaoController {
 
     @Autowired
     private SessaoService service;
 
     @GetMapping(path = "/{id}")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Ok"),
-            @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 403, message = "Proíbido"),
-            @ApiResponse(code = 404, message = "Objeto não encontrado"),
-    })
-    @ApiOperation(value = "Busca por {id}")
     public ResponseEntity<Sessao> findById(@PathVariable Long id) {
         Sessao sessao = service.findById(id);
 
@@ -42,13 +30,6 @@ public class SessaoController {
     }
 
     @PostMapping()
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Ok"),
-            @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 403, message = "Proíbido"),
-            @ApiResponse(code = 404, message = "Objeto não encontrado"),
-    })
-    @ApiOperation(value = "Criar Pauta")
     public ResponseEntity<Sessao> create(@Valid @RequestBody CreateSessaoDTO dto) {
         Sessao sessao = service.dtoParaObj(dto);
         sessao = service.saveObj(sessao);

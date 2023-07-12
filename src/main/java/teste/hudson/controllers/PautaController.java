@@ -1,9 +1,5 @@
 package teste.hudson.controllers;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +17,12 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/pauta")
-@Api(value = "API Pauta")
 public class PautaController {
 
     @Autowired
     private PautaService service;
 
     @GetMapping(path = "/{id}")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Ok"),
-            @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 403, message = "Proíbido"),
-            @ApiResponse(code = 404, message = "Objeto não encontrado"),
-    })
-    @ApiOperation(value = "Busca por {id}")
     public ResponseEntity<Pauta> findById(@PathVariable Long id) {
         Pauta pauta = service.findById(id);
 
@@ -42,13 +30,6 @@ public class PautaController {
     }
 
     @PostMapping()
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Ok"),
-            @ApiResponse(code = 401, message = "Não autorizado"),
-            @ApiResponse(code = 403, message = "Proíbido"),
-            @ApiResponse(code = 404, message = "Objeto não encontrado"),
-    })
-    @ApiOperation(value = "Criar Pauta")
     public ResponseEntity<Pauta> create(@Valid @RequestBody CreatePautaDTO dto) {
         Pauta pauta = service.dtoParaObj(dto);
         pauta = service.saveObj(pauta);
