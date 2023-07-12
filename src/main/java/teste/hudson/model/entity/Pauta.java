@@ -1,5 +1,6 @@
 package teste.hudson.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
+@Table(name = "pauta")
 public class Pauta implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -29,6 +30,7 @@ public class Pauta implements Serializable {
     private String dsPauta;
 
     @Column(name = "data_criacao", nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm", timezone = "GMT-3")
     private LocalDateTime dataCriacao;
 
     public Pauta(String assuntoPauta, String dsPauta, LocalDateTime dataCriacao) {

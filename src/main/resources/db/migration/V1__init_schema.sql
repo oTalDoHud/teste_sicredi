@@ -6,8 +6,11 @@ CREATE TABLE pauta (
 );
 
 CREATE TABLE sessao (
-    id BIGINT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     total_votos INTEGER,
+    funcionamento_sessao INTEGER,
     inicio_sessao TIMESTAMP NOT NULL,
-    final_sessao TIMESTAMP
+    final_sessao TIMESTAMP,
+    id_pauta BIGINT,
+    FOREIGN KEY (id_pauta) REFERENCES pauta(id)
 );

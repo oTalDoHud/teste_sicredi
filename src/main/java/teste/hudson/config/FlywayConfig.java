@@ -12,7 +12,7 @@ public class FlywayConfig {
     @Bean
     public Flyway flyway(DataSource dataSource) {
         Flyway flyway = Flyway.configure()
-                .locations("db/migration/public")
+                .locations("db/migration")
                 .dataSource(dataSource)
                 .schemas("public")
                 .load();
