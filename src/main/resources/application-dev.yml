@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    password: celk
+    username: celk
+    url: jdbc:postgresql://localhost:5432/teste_sicredi
+  flyway:
+    locations: sql
+
+
+#PARA TROCAR A PORTA
+server:
+  port: 8080
+
