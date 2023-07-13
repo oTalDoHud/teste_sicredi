@@ -14,3 +14,9 @@ CREATE TABLE sessao (
     id_pauta BIGINT,
     FOREIGN KEY (id_pauta) REFERENCES pauta(id)
 );
+
+CREATE TABLE usuario (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    cpf VARCHAR(11) UNIQUE NOT NULL
+)

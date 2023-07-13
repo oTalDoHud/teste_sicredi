@@ -37,7 +37,7 @@ public class SessaoService {
                 null,
                 FuncionamentoSessao.ATIVA,
                 LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(dto.getDuracaoMinutos())
+                LocalDateTime.now().plusMinutes(dto.getDuracaoMinutos() != null ? dto.getDuracaoMinutos() : 1)
         );
     }
 
