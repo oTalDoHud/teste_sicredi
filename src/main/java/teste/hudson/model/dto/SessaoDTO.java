@@ -49,6 +49,7 @@ public class SessaoDTO implements Serializable {
         this.finalSessao = sessao.getFinalSessao();
         this.pauta = sessao.getPauta();
         this.statusSessaoDTO = new StatusSessaoDTO((totalVotosNao + totalVotosSim), totalVotosSim, totalVotosNao, gerarStatusSessao());
+        this.usuarios = sessao.getUsuarios();
     }
 
     private String gerarStatusSessao() {

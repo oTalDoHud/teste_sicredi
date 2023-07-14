@@ -70,6 +70,12 @@ public class SessaoService {
             return String.format("Sessão %d finalizada. Voto não registrado", sessao.getId());
         }
 
+        var usuario = usuarioService.findByCpf(dto.getCpf());
+
+        if (usuario == null) {
+            return "Usuário inválido, voto não registrado.";
+        }
+
         boolean match = sessao.getUsuarios().stream().map(Usuario::getCpf).anyMatch(
                 cpf -> cpf.equals(dto.getCpf()));
 
@@ -82,8 +88,6 @@ public class SessaoService {
         } else {
             sessao.addVotoNao();
         }
-
-        var usuario = usuarioService.findByCpf(dto.getCpf());
 
         sessao.getUsuarios().add(usuario);
 
