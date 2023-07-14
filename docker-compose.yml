@@ -18,7 +18,7 @@ services:
 
   teste_sicredi:
     container_name: teste_sicredi
-    image: otaldohud/teste_sicredi:1.0.3
+    image: otaldohud/teste_sicredi:1.0.6
     depends_on:
       - postgres-db
     environment:
