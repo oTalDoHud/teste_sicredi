@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import teste.hudson.model.dto.CreateSessaoDTO;
 import teste.hudson.model.dto.VotoDTO;
 import teste.hudson.model.entity.Sessao;
+import teste.hudson.model.entity.SessaoDTO;
 import teste.hudson.model.entity.Usuario;
 import teste.hudson.model.enums.FuncionamentoSessao;
 import teste.hudson.model.enums.Votos;
@@ -31,6 +32,12 @@ public class SessaoService {
         return sessao.orElseThrow(() -> new ObjetoNaoEncontradoException(
                 "Sessão não encontrada! id: " + id + ". Tipo: " + Sessao.class.getSimpleName()
         ));
+    }
+
+    public SessaoDTO preFindById(Long id) {
+        var sessao = findById(id);
+
+        return new SessaoDTO(sessao);
     }
 
     public Sessao dtoParaObj(CreateSessaoDTO dto) {

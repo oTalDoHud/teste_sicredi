@@ -12,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import teste.hudson.model.dto.CreateSessaoDTO;
 import teste.hudson.model.dto.VotoDTO;
 import teste.hudson.model.entity.Sessao;
+import teste.hudson.model.entity.SessaoDTO;
 import teste.hudson.service.SessaoService;
 
 import java.net.URI;
@@ -24,10 +25,10 @@ public class SessaoController {
     private final SessaoService service;
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Sessao> findById(@PathVariable Long id) {
-        Sessao sessao = service.findById(id);
+    public ResponseEntity<SessaoDTO> findById(@PathVariable Long id) {
+        SessaoDTO sessaoDTO = service.preFindById(id);
 
-        return ResponseEntity.ok().body(sessao);
+        return ResponseEntity.ok().body(sessaoDTO);
     }
 
     @PostMapping()

@@ -12,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import teste.hudson.model.dto.CreateUserDTO;
 import teste.hudson.model.entity.Usuario;
 import teste.hudson.service.UsuarioService;
+import teste.hudson.utils.CpfValidator;
 
 import java.net.URI;
 
@@ -22,11 +23,26 @@ public class UsuarioController {
 
     private final UsuarioService service;
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "id/{id}")
     public ResponseEntity<Usuario> findById(@PathVariable Long id) {
         Usuario user = service.findById(id);
 
         return ResponseEntity.ok().body(user);
+    }
+
+    @GetMapping(path = "/{cpf}")
+    public ResponseEntity<String> findById(@PathVariable String cpf) {
+        Usuario user = service.findByCpf(cpf);
+
+        if(!CpfValidator.isValid(cpf)){
+            return ResponseEntity.badRequest().body("status: INVALID_CPF");
+        }
+
+        if (user == null) {
+            return ResponseEntity.badRequest().body("status: UNABLE_TO_VOTE");
+        }
+
+        return ResponseEntity.ok().body("status: ABLE_TO_VOTE");
     }
 
     @PostMapping()

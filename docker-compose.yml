@@ -31,5 +31,4 @@ services:
 
 networks:
   teste_sicredi:
-#    external: true
     driver: bridge
