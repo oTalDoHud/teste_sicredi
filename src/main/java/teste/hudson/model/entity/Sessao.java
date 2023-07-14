@@ -3,15 +3,17 @@ package teste.hudson.model.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.persistence.Column;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import teste.hudson.model.enums.FuncionamentoSessao;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
+@Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "sessao")
@@ -23,8 +25,11 @@ public class Sessao implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "total_votos")
-    private Integer totalVotos;
+    @Column(name = "total_votos_sim")
+    private Integer totalVotosSim;
+
+    @Column(name = "total_votos_nao")
+    private Integer totalVotosNao;
 
     @Column(name = "funcionamento_sessao")
     private Integer funcionamentoSessao;
@@ -41,28 +46,46 @@ public class Sessao implements Serializable {
     @JoinColumn(name = "id_pauta")
     private Pauta pauta;
 
-    public Sessao(Pauta pauta, Integer totalVotos, FuncionamentoSessao funcionamentoSessao, LocalDateTime inicioSessao, LocalDateTime finalSessao) {
-        this.pauta = pauta;
-        this.totalVotos = totalVotos;
-        this.funcionamentoSessao = funcionamentoSessao.getCod();
-        this.inicioSessao = inicioSessao;
-        this.finalSessao = finalSessao;
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "sessao_usuario",
+            joinColumns = @JoinColumn(name = "id_sessao"),
+            inverseJoinColumns = @JoinColumn(name = "id_usuario")
+    )
+    private List<Usuario> usuarios = new ArrayList<>();
 
-    public Sessao(Long id, Pauta pauta, Integer totalVotos, FuncionamentoSessao funcionamentoSessao, LocalDateTime inicioSessao, LocalDateTime finalSessao) {
+    public Sessao(Long id, Integer totalVotosSim, Integer totalVotosNao, FuncionamentoSessao funcionamentoSessao, LocalDateTime inicioSessao, LocalDateTime finalSessao, Pauta pauta) {
         this.id = id;
-        this.pauta = pauta;
-        this.totalVotos = totalVotos;
+        this.totalVotosSim = totalVotosSim;
+        this.totalVotosNao = totalVotosNao;
         this.funcionamentoSessao = funcionamentoSessao.getCod();
         this.inicioSessao = inicioSessao;
         this.finalSessao = finalSessao;
+        this.pauta = pauta;
     }
 
-    public FuncionamentoSessao getFuncionamentoPauta() {
+    public Sessao(Integer totalVotosSim, Integer totalVotosNao, FuncionamentoSessao funcionamentoSessao, LocalDateTime inicioSessao, LocalDateTime finalSessao, Pauta pauta) {
+        this.totalVotosSim = totalVotosSim;
+        this.totalVotosNao = totalVotosNao;
+        this.funcionamentoSessao = funcionamentoSessao.getCod();
+        this.inicioSessao = inicioSessao;
+        this.finalSessao = finalSessao;
+        this.pauta = pauta;
+    }
+
+    public FuncionamentoSessao getFuncionamentoSessao() {
         return FuncionamentoSessao.toEnum(funcionamentoSessao);
     }
 
-    public void setFuncionamentoPauta(FuncionamentoSessao funcionamentoSessao) {
+    public void setFuncionamentoSessao(FuncionamentoSessao funcionamentoSessao) {
         this.funcionamentoSessao = funcionamentoSessao.getCod();
+    }
+
+    public void addVotoSim() {
+        totalVotosSim++;
+    }
+
+    public void addVotoNao() {
+        totalVotosNao++;
     }
 }

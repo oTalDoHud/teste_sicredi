@@ -2,7 +2,7 @@ package teste.hudson.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -17,10 +17,10 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/pauta")
+@AllArgsConstructor
 public class PautaController {
 
-    @Autowired
-    private PautaService service;
+    private final PautaService service;
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Pauta> findById(@PathVariable Long id) {

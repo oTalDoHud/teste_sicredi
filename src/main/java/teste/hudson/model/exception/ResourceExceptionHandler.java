@@ -14,11 +14,11 @@ public class ResourceExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ObjetoNaoEncontradoException> objetoNaoEncontrado(ObjetoNaoEncontradoException e) {
-        return ExceptionUtils.getResponseError(e.getClass().getName(), HttpStatus.NOT_FOUND.value(), e.getMessage());
+        return ExceptionUtils.getResponseError(e.getClass().getSimpleName(), HttpStatus.NOT_FOUND.value(), e.getMessage());
     }
 
     @ExceptionHandler
     public ResponseEntity<CpfInvalidoException> cpfInvalidoException(CpfInvalidoException e) {
-        return ExceptionUtils.getResponseError(e.getClass().getName(), HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        return ExceptionUtils.getResponseError(e.getClass().getSimpleName(), HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 }

@@ -1,7 +1,7 @@
 package teste.hudson.service;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import teste.hudson.model.entity.Pauta;
 import teste.hudson.model.entity.Sessao;
@@ -15,16 +15,16 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @Service
+@AllArgsConstructor
 public class DBservice {
 
     private final LocalDateTime date = LocalDateTime.now();
-    @Autowired
-    private PautaRepository pautaRepository;
-    @Autowired
-    private SessaoRepository sessaoRepository;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final PautaRepository pautaRepository;
+
+    private final SessaoRepository sessaoRepository;
+
+    private final UsuarioRepository usuarioRepository;
 
     public void instanciandoBancoDeDados() {
         sessaoRepository.deleteAll();
@@ -37,9 +37,9 @@ public class DBservice {
 
         pautaRepository.saveAll(Arrays.asList(pauta01, pauta02, pauta03));
 
-        Sessao sessao01 = new Sessao(pauta01, 45, FuncionamentoSessao.ATIVA, date, date.plusMinutes(1));
-        Sessao sessao02 = new Sessao(pauta02, 54, FuncionamentoSessao.ATIVA, date, date.plusMinutes(30));
-        Sessao sessao03 = new Sessao(pauta03, 98, FuncionamentoSessao.ATIVA, date, date.plusMinutes(90));
+        Sessao sessao01 = new Sessao(45, 25, FuncionamentoSessao.ATIVA, date, date.plusMinutes(1), pauta01);
+        Sessao sessao02 = new Sessao(54, 12, FuncionamentoSessao.ATIVA, date, date.plusMinutes(30), pauta02);
+        Sessao sessao03 = new Sessao(98, 22, FuncionamentoSessao.ATIVA, date, date.plusMinutes(90), pauta03);
 
         sessaoRepository.saveAll(Arrays.asList(sessao01, sessao02, sessao03));
 
@@ -48,5 +48,11 @@ public class DBservice {
         Usuario usuario3 = new Usuario("User01", "45864759007");
 
         usuarioRepository.saveAll(Arrays.asList(usuario1, usuario2, usuario3));
+
+        sessao01.getUsuarios().add(usuario1);
+        sessao01.getUsuarios().add(usuario2);
+        sessao01.getUsuarios().add(usuario3);
+
+        sessaoRepository.save(sessao01);
     }
 }

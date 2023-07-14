@@ -1,14 +1,16 @@
 package teste.hudson.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -26,6 +28,10 @@ public class Usuario implements Serializable {
 
     @Column(name = "cpf", nullable = false)
     private String cpf;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "usuarios", cascade = CascadeType.ALL)
+    private List<Sessao> sessoes;
 
     public Usuario(String nome, String cpf) {
         this.nome = nome;

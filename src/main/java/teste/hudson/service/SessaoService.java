@@ -1,25 +1,29 @@
 package teste.hudson.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import teste.hudson.model.dto.CreateSessaoDTO;
-import teste.hudson.model.entity.Pauta;
+import teste.hudson.model.dto.VotoDTO;
 import teste.hudson.model.entity.Sessao;
+import teste.hudson.model.entity.Usuario;
 import teste.hudson.model.enums.FuncionamentoSessao;
+import teste.hudson.model.enums.Votos;
 import teste.hudson.repository.SessaoRepository;
 import teste.hudson.service.exception.ObjetoNaoEncontradoException;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class SessaoService {
 
-    @Autowired
-    private SessaoRepository repository;
+    private final SessaoRepository repository;
 
-    @Autowired
-    private PautaService pautaService;
+    private final PautaService pautaService;
+
+    private final UsuarioService usuarioService;
 
     public Sessao findById(Long id) {
         Optional<Sessao> sessao = repository.findById(id);
@@ -30,14 +34,15 @@ public class SessaoService {
     }
 
     public Sessao dtoParaObj(CreateSessaoDTO dto) {
-        Pauta pauta = pautaService.findById(dto.getPauta());
+        var pauta = pautaService.findById(dto.getPauta());
 
         return new Sessao(
-                pauta,
-                null,
+                0,
+                0,
                 FuncionamentoSessao.ATIVA,
                 LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(dto.getDuracaoMinutos() != null ? dto.getDuracaoMinutos() : 1)
+                LocalDateTime.now().plusMinutes(dto.getDuracaoMinutos() != null ? dto.getDuracaoMinutos() : 1),
+                pauta
         );
     }
 
@@ -45,4 +50,38 @@ public class SessaoService {
         return repository.save(sessao);
     }
 
+    public String votar(VotoDTO dto) {
+        var sessao = findById(dto.getSessao());
+
+        if (Objects.equals(FuncionamentoSessao.INATIVA.getCod(), sessao.getFuncionamentoSessao().getCod())) {
+            return String.format("Sessão %d finalizada. Voto não registrado", sessao.getId());
+        }
+
+        if (LocalDateTime.now().isAfter(sessao.getFinalSessao())) {
+            sessao.setFuncionamentoSessao(FuncionamentoSessao.INATIVA);
+            saveObj(sessao);
+            return String.format("Sessão %d finalizada. Voto não registrado", sessao.getId());
+        }
+
+        boolean match = sessao.getUsuarios().stream().map(Usuario::getCpf).anyMatch(
+                cpf -> cpf.equals(dto.getCpf()));
+
+        if (match) {
+            return "Você já votou nessa sessão.";
+        }
+
+        if (dto.getVoto() == Votos.SIM.getCod()) {
+            sessao.addVotoSim();
+        } else {
+            sessao.addVotoNao();
+        }
+
+        var usuario = usuarioService.findByCpf(dto.getCpf());
+
+        sessao.getUsuarios().add(usuario);
+
+        saveObj(sessao);
+
+        return "Voto realizado com sucesso.";
+    }
 }
