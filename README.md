@@ -7,7 +7,7 @@ Modelo de arquitetura onde as funções e privilégios ficam divididos entre Res
 
 ## Modelo conceitual
 
-![Modelo_relacional](/home/hudson/projetos/java/teste/assets/modelo_relacional.png)
+![Modelo_relacional](https://github.com/oTalDoHud/teste_sicredi/blob/master/assets/modelo_relacional.png)
 
 
 ## Execução da aplicação em Docker
@@ -70,7 +70,7 @@ curl --request POST \
 }'
 ```
 E, posteriormente é possível consultar novamente essa sessão:
-![Modelo_relacional](/home/hudson/projetos/java/teste/assets/retorno_sessao.png)
+![Modelo_relacional](https://github.com/oTalDoHud/teste_sicredi/blob/master/assets/retorno_sessao.png)
 
 # Tecnologias utilizadas
 - Java
